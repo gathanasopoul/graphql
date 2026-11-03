@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zone01 Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Login View -->
+<div id="login-section">
+    <form id="login-form">
+        <input type="text" id="username-or-email" required>
+        <input type="password" id="password" required>
+        <button type="submit">Log In</button>
+        <div id="error-message"></div>
+    </form>
+</div>
+<!--Profile View -->
+<div id="profile-section" style="display: none;">
+    <header>
+        <button id="logout-btn">Log out</button>
+    </header>
+    <!-- Container for username, XP, audit ratio stats -->
+        <div id="user-info"></div>
+        <!-- Containers for the 2 SVG graphs -->
+            <div id="xp-chart-container"></div>
+            <div id="secondary-chart-container"></div>
+
+
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>
