@@ -60,6 +60,7 @@ async function handleLogin(identifier, password) {
         passwordInput.value = "";
 
         console.log("Logged in successfully! Token stored.");
+        loadUserData();
     } catch (err) {
         errorMessage.textContent = err.message;
     }
@@ -71,9 +72,56 @@ function pageLoadCheck() {
     if (jwt) {
         loginSection.style.display = "none";
         profileSection.style.display = "block"
+        loadUserData();
     } else {
         loginSection.style.display = "block";
         profileSection.style.display = "none";
+    }
+}
+
+async function fetchGraphQL(query) {
+    const jwt = localStorage.getItem("jwt")
+
+    try {
+        const res = await fetch(GRAPHQL_URL, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ query: query })
+        });
+
+        const result = await res.json();
+
+        if (result.errors) {
+            console.error("GraphQL errors:", result.errors);
+            throw new Error(result.errors[0].message);
+        }
+
+        return result.data;
+    } catch (err) {
+        console.error("Fetch error:", err);
+        throw err;
+    }
+}
+
+async function loadUserData() {
+  const query = `
+  query {
+    user {
+        id
+        login
+        auditRatio
+    }
+  }
+`;
+
+    try {
+        const data = await fetchGraphQL(query);
+        console.log("GraphQL response:", data);
+    } catch (err) {
+        console.log("Failed to load user data:", err);
     }
 }
 
