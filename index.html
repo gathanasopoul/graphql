@@ -2,36 +2,122 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zone01 Profile</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!--Login View -->
-<div id="login-section">
-    <form id="login-form">
-        <input type="text" id="username-or-email" required>
-        <input type="password" id="password" required>
-        <button type="submit">Log In</button>
-        <div id="error-message"></div>
-    </form>
-</div>
-<!--Profile View -->
-<div id="profile-section" style="display: none;">
-    <header>
-        <button id="logout-btn">Log out</button>
-    </header>
-    <!-- Container for username, XP, audit ratio stats -->
-        <div id="user-info">
-            <span id="login"></span>
-            <span id="totalXP"></span>
-            <span id="auditRatio"></span>
+    <!-- Login View -->
+    <main id="login-section" class="login-shell">
+        <div class="login-card">
+            <div class="window-titlebar">
+                <span class="brand-mark">01</span>
+                <div class="brand-text">
+                    <h1>Zone01 Profile</h1>
+                    <p>Sign in with your platform credentials</p>
+                </div>
+            </div>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username-or-email">Username or email</label>
+                    <input
+                        type="text"
+                        id="username-or-email"
+                        placeholder="e.g. jdoe or jdoe@example.com"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+                <button type="submit" id="login-btn" class="btn-primary">Sign in</button>
+                <div id="error-message" role="alert"></div>
+            </form>
+            <p class="login-footnote">Queries live data from platform.zone01.gr via JWT.</p>
         </div>
-        <!-- Containers for the 2 SVG graphs -->
-            <div id="xp-chart-container"></div>
-            <div id="secondary-chart-container"></div>
+    </main>
 
+    <!-- Profile View -->
+    <div id="profile-section" class="profile-shell hidden">
+        <header class="profile-header">
+            <div class="header-left">
+                <span class="brand-mark small">01</span>
+                <div>
+                    <h1>Student Profile</h1>
+                    <p class="header-subtitle">Zone01 GraphQL Telemetry</p>
+                </div>
+            </div>
+            <button id="logout-btn" type="button" class="btn-secondary">Log out</button>
+        </header>
 
-</div>
-<script type="module" src="app.js" defer></script>
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-card hidden" role="status" aria-live="polite">
+            <div class="loading-spinner" aria-hidden="true"></div>
+            <p class="loading-title">Loading your profile data…</p>
+            <div class="loading-bar" aria-hidden="true">
+                <div class="loading-bar-fill"></div>
+            </div>
+            <p id="loading-status" class="loading-status">Fetching user stats, XP history, and evaluations</p>
+        </div>
+
+        <!-- Loaded Profile Content -->
+        <main id="profile-content" class="profile-content hidden">
+            <!-- Three Mandatory Information Sections -->
+            <div id="user-info" class="stats-grid">
+                <section id="identity-section" class="stat-card" aria-labelledby="identity-heading">
+                    <h2 id="identity-heading" class="section-label">User Identification</h2>
+                    <span id="login" class="stat-value"></span>
+                    <p id="user-id-meta" class="stat-meta"></p>
+                </section>
+                <section id="xp-section" class="stat-card" aria-labelledby="xp-heading">
+                    <h2 id="xp-heading" class="section-label">Total XP</h2>
+                    <span id="totalXP" class="stat-value"></span>
+                    <p id="xp-meta" class="stat-meta"></p>
+                </section>
+                <section id="audit-section" class="stat-card" aria-labelledby="audit-heading">
+                    <h2 id="audit-heading" class="section-label">Audit Ratio</h2>
+                    <span id="auditRatio" class="stat-value"></span>
+                    <p id="audit-meta" class="stat-meta"></p>
+                </section>
+            </div>
+
+            <!-- Fourth Mandatory Section: Statistical Graphs (SVG) -->
+            <section id="charts-section" class="panel-section" aria-labelledby="charts-heading">
+                <div class="section-header-row">
+                    <div>
+                        <h2 id="charts-heading" class="section-heading">Statistical Graphs</h2>
+                        <p class="section-subtitle">Hover over points and bars for exact figures; click to pin or filter.</p>
+                    </div>
+                </div>
+                <div class="charts-grid">
+                    <div id="xp-chart-container" class="chart-frame chart-frame-wide"></div>
+                    <div id="secondary-chart-container" class="chart-frame"></div>
+                    <div id="skills-chart-container" class="chart-frame"></div>
+                </div>
+            </section>
+
+            <!-- Bonus Section: Recent Evaluations (Nested Query) -->
+            <section id="results-section" class="panel-section" aria-labelledby="results-heading">
+                <div class="section-header-row">
+                    <div>
+                        <h2 id="results-heading" class="section-heading">Recent Evaluations</h2>
+                        <p id="results-summary" class="section-subtitle"></p>
+                    </div>
+                    <div id="results-filters" class="chart-controls" role="group" aria-label="Filter recent results"></div>
+                </div>
+                <div id="results-container" class="results-frame"></div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="app.js" defer></script>
 </body>
 </html>
